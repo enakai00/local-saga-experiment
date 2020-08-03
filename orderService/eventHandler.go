@@ -49,8 +49,6 @@ func clientEventHandler(orderEventQueue eventQueue.Queue,
 			orderStatus := createOrder(orderRequest)
 			jsonBytes, _ := json.Marshal(orderStatus)
 			eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
-		default:
-			eventQueue.Send("Error", []byte{}, orderEventQueue)
 		}
 	}
 }
@@ -70,8 +68,6 @@ func kitchenEventHandler(orderEventQueue eventQueue.Queue,
 				jsonBytes, _ := json.Marshal(orderStatus)
 				eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
 			}
-		default:
-			eventQueue.Send("Error", []byte{}, orderEventQueue)
 		}
 	}
 }

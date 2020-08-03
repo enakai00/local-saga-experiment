@@ -50,8 +50,6 @@ func orderEventHandler(kitchenEventQueue eventQueue.Queue,
 				jsonBytes, _ := json.Marshal(ticketStatus)
 				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
 			}
-		default:
-			eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
 		}
 	}
 }
@@ -70,8 +68,6 @@ func consumerEventHandler(kitchenEventQueue eventQueue.Queue,
 				jsonBytes, _ := json.Marshal(ticketStatus)
 				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
 			}
-		default:
-			eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
 		}
 	}
 }

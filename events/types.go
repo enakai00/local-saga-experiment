@@ -6,6 +6,7 @@ type Event struct {
 	Body []byte // JSON string
 }
 
+// Event.Body
 type OrderRequest struct {
 	ConsumerID   string `json:"consumerID"`
 	RestaurantID string `json:"restaurantID"`
