@@ -28,10 +28,10 @@ func kitchenEventHandler(consumerEventQueue eventQueue.Queue,
 					Status:     status,
 				}
 				jsonBytes, _ := json.Marshal(consumerVerification)
-                eventQueue.Send("ConsumerVerification", jsonBytes, consumerEventQueue)
+				eventQueue.Send("ConsumerVerification", jsonBytes, consumerEventQueue)
 			}
 		default:
-            eventQueue.Send("Error", []byte{}, consumerEventQueue)
+			eventQueue.Send("Error", []byte{}, consumerEventQueue)
 		}
 	}
 }

@@ -20,7 +20,7 @@ func StartHandlers(orderEventQueue, clientEventQueue, kitchenEventQueue eventQue
 
 func createOrder(orderRequest *events.OrderRequest) events.OrderStatus {
 	id, _ := uuid.NewRandom()
-    orderID := id.String()
+	orderID := id.String()
 	orderStatus := events.OrderStatus{
 		OrderID:      orderID,
 		Status:       "pending",
@@ -48,9 +48,9 @@ func clientEventHandler(orderEventQueue eventQueue.Queue,
 			json.Unmarshal(event.Body, orderRequest)
 			orderStatus := createOrder(orderRequest)
 			jsonBytes, _ := json.Marshal(orderStatus)
-            eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
+			eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
 		default:
-            eventQueue.Send("Error", []byte{}, orderEventQueue)
+			eventQueue.Send("Error", []byte{}, orderEventQueue)
 		}
 	}
 }
@@ -68,10 +68,10 @@ func kitchenEventHandler(orderEventQueue eventQueue.Queue,
 			if status == "approved" {
 				orderStatus := updateOrder(orderID, status)
 				jsonBytes, _ := json.Marshal(orderStatus)
-                eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
+				eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
 			}
 		default:
-            eventQueue.Send("Error", []byte{}, orderEventQueue)
+			eventQueue.Send("Error", []byte{}, orderEventQueue)
 		}
 	}
 }

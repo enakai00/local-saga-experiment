@@ -48,10 +48,10 @@ func orderEventHandler(kitchenEventQueue eventQueue.Queue,
 			if orderStatus.Status == "pending" {
 				ticketStatus := createTicket(orderStatus)
 				jsonBytes, _ := json.Marshal(ticketStatus)
-                eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
+				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
 			}
 		default:
-            eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
+			eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
 		}
 	}
 }
@@ -68,10 +68,10 @@ func consumerEventHandler(kitchenEventQueue eventQueue.Queue,
 				orderID := consumerVerification.OrderID
 				ticketStatus := updateTicket(orderID)
 				jsonBytes, _ := json.Marshal(ticketStatus)
-                eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
+				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
 			}
 		default:
-            eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
+			eventQueue.Send("TicketStatus", []byte{}, kitchenEventQueue)
 		}
 	}
 }

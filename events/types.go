@@ -1,9 +1,9 @@
 package events
 
 type Event struct {
-	ID     string
-	Type   string // OrderRequest, OrderStatus, ConsumerVerification, etc...
-	Body   []byte // JSON string
+	ID   string
+	Type string // OrderRequest, OrderStatus, ConsumerVerification, etc...
+	Body []byte // JSON string
 }
 
 type OrderRequest struct {
@@ -32,5 +32,5 @@ type TicketStatus struct {
 	Status       string `json:"status"` // peding, approved, rejected
 	RestaurantID string `json:"restaurantID"`
 	FoodID       string `json:"FoodID"`
-    FoodType     string `json:"FoodType"`  // vegan, beef, etc...
+	FoodType     string `json:"FoodType"` // vegan, beef, etc...
 }
