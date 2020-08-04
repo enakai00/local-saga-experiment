@@ -29,7 +29,11 @@ func kitchenEventHandler(consumerEventQueue eventQueue.Queue,
 				}
 				jsonBytes, _ := json.Marshal(consumerVerification)
 				eventQueue.Send("ConsumerVerification", jsonBytes, consumerEventQueue)
+				// event.Ack()
 			}
+		default:
+			// Unknown event
+			// event.Ack()
 		}
 	}
 }

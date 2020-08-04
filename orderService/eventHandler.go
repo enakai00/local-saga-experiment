@@ -28,7 +28,6 @@ func createOrder(orderRequest *events.OrderRequest) events.OrderStatus {
 		RestaurantID: orderRequest.RestaurantID,
 		FoodID:       orderRequest.FoodID,
 	}
-	orderDatabase[orderID] = orderStatus // store order in DB
 	return orderStatus
 }
 
@@ -47,8 +46,16 @@ func clientEventHandler(orderEventQueue eventQueue.Queue,
 			orderRequest := new(events.OrderRequest)
 			json.Unmarshal(event.Body, orderRequest)
 			orderStatus := createOrder(orderRequest)
+
+			// Begin Transaction
+			orderDatabase[orderStatus.OrderID] = orderStatus // store order in DB
 			jsonBytes, _ := json.Marshal(orderStatus)
 			eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
+			// End Transaction
+			// event.Ack()
+		default:
+			// Unknown event
+			// event.Ack()
 		}
 	}
 }
@@ -65,9 +72,17 @@ func kitchenEventHandler(orderEventQueue eventQueue.Queue,
 			status := ticketStatus.Status
 			if status == "approved" {
 				orderStatus := updateOrder(orderID, status)
+
+				// Begin Transaction
+				orderDatabase[orderStatus.OrderID] = orderStatus // store order in DB
 				jsonBytes, _ := json.Marshal(orderStatus)
 				eventQueue.Send("OrderStatus", jsonBytes, orderEventQueue)
+				// End Transaction
+				// event.Ack()
 			}
+		default:
+			// Unknown event
+			// event.Ack()
 		}
 	}
 }

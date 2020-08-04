@@ -27,7 +27,6 @@ func createTicket(orderStatus *events.OrderStatus) events.TicketStatus {
 		FoodID:       orderStatus.FoodID,
 		FoodType:     foodType,
 	}
-	ticketDatabase[orderID] = ticketStatus // store order in DB
 	return ticketStatus
 }
 
@@ -47,8 +46,13 @@ func orderEventHandler(kitchenEventQueue eventQueue.Queue,
 			json.Unmarshal(event.Body, orderStatus)
 			if orderStatus.Status == "pending" {
 				ticketStatus := createTicket(orderStatus)
+
+				// Begin Transaction
+				ticketDatabase[ticketStatus.OrderID] = ticketStatus // store order in DB
 				jsonBytes, _ := json.Marshal(ticketStatus)
 				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
+				// End Transaction
+				// event.Ack()
 			}
 		}
 	}
@@ -65,9 +69,17 @@ func consumerEventHandler(kitchenEventQueue eventQueue.Queue,
 			if consumerVerification.Status == "verified" {
 				orderID := consumerVerification.OrderID
 				ticketStatus := updateTicket(orderID)
+
+				// Begin Transaction
+				ticketDatabase[ticketStatus.OrderID] = ticketStatus // store order in DB
 				jsonBytes, _ := json.Marshal(ticketStatus)
 				eventQueue.Send("TicketStatus", jsonBytes, kitchenEventQueue)
+				// End Transaction
+				// event.Ack()
 			}
+		default:
+			// Unknown event
+			// event.Ack()
 		}
 	}
 }
